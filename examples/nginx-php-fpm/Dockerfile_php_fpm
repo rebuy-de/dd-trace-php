@@ -1,6 +1,8 @@
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 
 ARG DD_TRACER_VERSION
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN curl -A "Docker" -o /tmp/datadog-setup.php -D - -L -s https://github.com/DataDog/dd-trace-php/releases/download/${DD_TRACER_VERSION}/datadog-setup.php \
     && php /tmp/datadog-setup.php --php-bin=all --enable-profiling
@@ -11,5 +13,9 @@ ADD public /var/www/public
 ADD 10-opcache.ini /usr/local/etc/php/conf.d/10-opcache.ini
 ADD 99-preload.ini /usr/local/etc/php/conf.d/99-preload.ini
 ADD www.conf /usr/local/etc/php-fpm.d/www.conf
+
+ENV DD_PROFILING_LOG_LEVEL=trace
+ENV DD_TRACE_DEBUG=true
+ENV RUST_BACKTRACE=full
 
 CMD php-fpm
