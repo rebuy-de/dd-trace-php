@@ -8,6 +8,7 @@ RUN dpkg -i /tmp/dd-trace.deb
 RUN mkdir -p /var/www/public
 ADD public /var/www/public
 
+ADD 10-opcache.ini /usr/local/etc/php/conf.d/10-opcache.ini
 ADD www.conf /usr/local/etc/php-fpm.d/www.conf
 
 CMD php-fpm
