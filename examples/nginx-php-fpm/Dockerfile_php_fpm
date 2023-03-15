@@ -2,8 +2,8 @@ FROM php:7.4-fpm
 
 ARG DD_TRACER_VERSION
 
-ADD https://github.com/DataDog/dd-trace-php/releases/download/${DD_TRACER_VERSION}/datadog-php-tracer_${DD_TRACER_VERSION}_amd64.deb /tmp/dd-trace.deb
-RUN dpkg -i /tmp/dd-trace.deb
+RUN curl -A "Docker" -o /tmp/datadog-setup.php -D - -L -s https://github.com/DataDog/dd-trace-php/releases/download/${DD_TRACER_VERSION}/datadog-setup.php \
+    && php /tmp/datadog-setup.php --php-bin=all --enable-profiling
 
 RUN mkdir -p /var/www/public
 ADD public /var/www/public
