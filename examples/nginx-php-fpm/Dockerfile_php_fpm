@@ -18,4 +18,6 @@ ENV DD_PROFILING_LOG_LEVEL=trace
 ENV DD_TRACE_DEBUG=true
 ENV RUST_BACKTRACE=full
 
+USER www-data:www-data
+
 CMD php-fpm
